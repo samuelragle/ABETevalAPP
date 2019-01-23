@@ -1,0 +1,10 @@
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\bin\Debug\netstandard2.0\ABET.deps.json
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\bin\Debug\netstandard2.0\ABET.dll
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\bin\Debug\netstandard2.0\ABET.pdb
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\obj\Debug\netstandard2.0\ABET.csprojAssemblyReference.cache
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\obj\Debug\netstandard2.0\ABET.csproj.CoreCompileInputs.cache
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\obj\Debug\netstandard2.0\ABET.AssemblyInfoInputs.cache
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\obj\Debug\netstandard2.0\ABET.AssemblyInfo.cs
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\obj\Debug\netstandard2.0\ABET.dll
+C:\Users\Samuel Ragle\source\repos\ABET\ABET\ABET\obj\Debug\netstandard2.0\ABET.pdb
