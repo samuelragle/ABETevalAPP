@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+using ABET.Data;
 
 namespace ABET
 {
@@ -9,6 +9,7 @@ namespace ABET
     {
 
         public static bool LoggedIn { get; set; }
+        public static Session Session { get; set; }
 
         public App()
         {
@@ -21,6 +22,7 @@ namespace ABET
             else
             {
                 MainPage = new MainPage();
+                Session = new Session();
             }
             
 

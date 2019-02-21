@@ -47,11 +47,11 @@
   },
   "libraries": {
     "Microsoft.NETCore.Platforms/1.1.0": {
-      "sha512": "a/iSwnRZb+LHFk49hQOyThh/ZNC3vsbZsF65XwQIb863qF6msmhdQtxGXFL28Ob2NsCz/drEj28BJd/YPpLRBg==",
+      "sha512": "kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
       "type": "package",
       "path": "microsoft.netcore.platforms/1.1.0",
       "files": [
-        ".signature.p7s",
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/_._",
@@ -344,23 +344,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Samuel Ragle\\.nuget\\packages\\": {},
+    "C:\\Users\\User\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Samuel Ragle\\source\\repos\\ABET\\ABET\\ABET\\ABET.csproj",
+      "projectUniqueName": "E:\\Adrian's Stuff\\things\\SE\\ABET\\ABETevalAPP\\ABET\\ABET\\ABET.csproj",
       "projectName": "ABET",
-      "projectPath": "C:\\Users\\Samuel Ragle\\source\\repos\\ABET\\ABET\\ABET\\ABET.csproj",
-      "packagesPath": "C:\\Users\\Samuel Ragle\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Samuel Ragle\\source\\repos\\ABET\\ABET\\ABET\\obj\\",
+      "projectPath": "E:\\Adrian's Stuff\\things\\SE\\ABET\\ABETevalAPP\\ABET\\ABET\\ABET.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "E:\\Adrian's Stuff\\things\\SE\\ABET\\ABETevalAPP\\ABET\\ABET\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Samuel Ragle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -368,7 +368,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://www.myget.org/F/discord-net/api/v3/index.json": {}
       },
       "frameworks": {
         "netstandard2.0": {
