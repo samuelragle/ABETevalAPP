@@ -15,11 +15,11 @@ namespace ABET.Data
 
         public Session(string connString, string semester)
         {
-            PullClasses(semester);
             SelectedClasses = new List<Class>();
             sClassSurveys = new List<Survey>();
             conn = new SqlConnection(connString);
-            
+            PullClasses(semester);
+
         }
         public void UpdateClasses(string semester)
         {

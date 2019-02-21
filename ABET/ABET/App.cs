@@ -28,10 +28,11 @@ namespace ABET
             
 
         }
-        public Session GetSession()
+        internal Session GetSession()
         {
             return Session;
         }
+
         protected override void OnStart()
         {
             // Handle when your app starts
