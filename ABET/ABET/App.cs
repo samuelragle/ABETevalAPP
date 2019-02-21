@@ -9,7 +9,8 @@ namespace ABET
     {
 
         public static bool LoggedIn { get; set; }
-        public static Session Session { get; set; }
+        private static string connString; // produce from some sort of args
+        private static Session Session;
 
         public App()
         {
@@ -22,12 +23,15 @@ namespace ABET
             else
             {
                 MainPage = new MainPage();
-                Session = new Session("","Fall 2015");
+                Session = new Session(connString,"Fall 2015");
             }
             
 
         }
-
+        public Session GetSession()
+        {
+            return Session;
+        }
         protected override void OnStart()
         {
             // Handle when your app starts
