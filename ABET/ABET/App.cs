@@ -22,7 +22,7 @@ namespace ABET
             else
             {
                 MainPage = new MainPage();
-                Session = new Session();
+                Session = new Session("","Fall 2015");
             }
             
 

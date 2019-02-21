@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
+using System.Data.SqlClient;
 
 namespace ABET.Data
 {
@@ -10,20 +11,21 @@ namespace ABET.Data
         public static List<Class> Classes;
         private List<Class> SelectedClasses;
         public List<Survey> sClassSurveys;
+        private static SqlConnection conn;
 
-        public Session()
+        public Session(string connString, string semester)
         {
-            // TODO: pull all classes from db and set to classes
-            Classes = new List<Class>();
+            PullClasses(semester);
             SelectedClasses = new List<Class>();
             sClassSurveys = new List<Survey>();
+            conn = new SqlConnection(connString);
+            
         }
-        public void UpdateClasses(Semester semester)
+        public void UpdateClasses(string semester)
         {
             sClassSurveys.Clear();
             SelectedClasses.Clear();
-            // TODO: pull all classes by semster
-            Classes = new List<Class>();
+            PullClasses(semester);
         }
         public void UpdateSurveys()
         {
@@ -51,6 +53,17 @@ namespace ABET.Data
                 sum += s.response;
             }
             return sum / sClassSurveys.Count;
+        }
+        private void PullClasses(string semester)
+        {
+            // TODO: pull all classes by semster
+            /* 
+             * To pull a Class, pull the associated Section and list of Surveys
+             * For each Section pulled, we must pull a Course and a Semester
+             * 
+             * To pull a Survey, pull the SurveyClass and ABETGoal associated
+             */
+            Classes = new List<Class>();
         }
     }
 }
