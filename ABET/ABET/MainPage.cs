@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ABET.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace ABET
 
         public MainPage()
         {
+            Session session = App.GetSession();
 
             NavigationPage.SetHasNavigationBar(this, false);
 
@@ -22,7 +24,6 @@ namespace ABET
             quizPage.Title = "Quizzes";
             HistoricalPage historicalPage = new HistoricalPage();
             historicalPage.Title = "Load Historical Data";
-
             Children.Add(resultsPage);
             Children.Add(quizPage);
             Children.Add(historicalPage);

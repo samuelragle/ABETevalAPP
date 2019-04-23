@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ABET": {
+      "commandName": "Project",
+      "commandLineArgs": "oudb.database.windows.net capDB hawk5461 CapSQLDB2019",
+      "environmentVariables": {
+        "source": "oudb.database.windows.net"
+      }
+    }
+  }
+}

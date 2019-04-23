@@ -8,8 +8,8 @@ namespace ABET.Data
     {
         private string Department { get; set; }
         private int CourseNum { get; set; }
-        private string CourseTitle { get; set; }
-        private int ID { get; set; }
+        internal string CourseTitle { get; set; }
+        internal int ID { get; set; }
         
         public Course(string department, int courseNum, string courseTitle, int id)
         {

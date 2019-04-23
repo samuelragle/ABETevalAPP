@@ -5,13 +5,13 @@ using System.Text;
 
 namespace ABET.Data
 {
-    class ABETGoal:ISerializable
+    public class ABETGoal:ISerializable
     {
         private string goal { get; set; }
         private string description { get; set; }
-        private int id { get; set; }
+        private short id { get; set; }
 
-        public ABETGoal(string goal, string description, int id)
+        public ABETGoal(string goal, string description, short id)
         {
             this.goal = goal;
             this.description = description;
@@ -22,13 +22,13 @@ namespace ABET.Data
         {
             info.AddValue("goal", goal, typeof(string));
             info.AddValue("desc", description, typeof(string));
-            info.AddValue("id", id, typeof(int));
+            info.AddValue("id", id, typeof(short));
         }
         public ABETGoal(SerializationInfo info, StreamingContext context)
         {
             goal = (string) info.GetValue("goal", typeof(string));
             description = (string) info.GetValue("desc", typeof(string));
-            id = (int) info.GetValue("id", typeof(int));
+            id = (short) info.GetValue("id", typeof(short));
         }
     }
 }

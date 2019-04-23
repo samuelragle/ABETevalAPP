@@ -15,5 +15,9 @@ namespace ABET.Data
             Section = section;
             Surveys = surveys;
         }
+        public override string ToString()
+        {
+            return Section.Course.CourseTitle + " " + Section.Semester.semester + " " + Section.Semester.year;
+        }
     }
 }

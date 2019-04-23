@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ABET.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,8 @@ namespace ABET
         TableSection switchCellTable;
         List<string> semesterList;
         List<Cell> temporarylist;
-        Picker picker;
+        public static Picker picker;
+        Session session;
 
 
         //  General string array for temp use
@@ -41,7 +43,7 @@ namespace ABET
 
         public ResultsPage()
         {
-
+            session = App.GetSession();
             //Create the grid for the page that displays the list of classes and pages.
             classGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(.2, GridUnitType.Star) });
             classGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Star) });
@@ -94,9 +96,10 @@ namespace ABET
 
 
             //depending on what sql select statements might have to change this
-            picker.ItemsSource = terms;
+            session.PullSemesters();
+            picker.ItemsSource = session.Semesters;
             picker.SelectedIndex = 0;
-            picker.SelectedIndexChanged += this.PickerSemester;
+            picker.SelectedIndexChanged += PickerSemester;
 
 
             //Controls the class picker selection
@@ -107,9 +110,9 @@ namespace ABET
             };
 
             switchCellTable = new TableSection(picker.SelectedItem.ToString()) { };
-            foreach (var element in classes)
+            foreach (var element in session.Classes)
             {
-                switchCellTable.Add(new SwitchCell() { Text = element });
+                switchCellTable.Add(new SwitchCell() { Text = element.ToString() });
             }
             classTableView.Root.Add(switchCellTable);
 
@@ -139,10 +142,9 @@ namespace ABET
         {
             //populate the TableView section with a switchcell representing each 
             //engineering class in the semester selected
-            if (picker.SelectedItem.ToString() == classTableView.Root.ToString())
-            { }
-            else
+            if (picker.SelectedItem != null && picker.SelectedItem.ToString() != classTableView.Root.ToString())
             {
+                session.PullSections((Semester)picker.SelectedItem);
                 classGrid.Children.RemoveAt(3);
                 classTableView = new TableView
                 {
@@ -150,10 +152,10 @@ namespace ABET
                     Intent = TableIntent.Settings
                 };
 
-                switchCellTable = new TableSection(picker.SelectedItem.ToString()) { };
-                foreach (var element in classes)
+                switchCellTable = new TableSection(picker.SelectedItem.ToString());
+                foreach (var element in session.Classes)
                 {
-                    switchCellTable.Add(new SwitchCell() { Text = element + " " + picker.SelectedItem.ToString() });
+                    switchCellTable.Add(new SwitchCell() { Text = element.ToString()});
                 }
                 classTableView.Root.Add(switchCellTable);
                 classGrid.Children.Add(classTableView, 1, 1);
@@ -192,6 +194,11 @@ namespace ABET
                 temporary.Add("empty");
             }
             infoListView.ItemsSource = temporary;
+        }
+        public static void UpdateSemesters(List<Semester> newSemesters)
+        {
+            picker.ItemsSource = newSemesters;
+            picker.SelectedIndex = 0;
         }
     }
 }

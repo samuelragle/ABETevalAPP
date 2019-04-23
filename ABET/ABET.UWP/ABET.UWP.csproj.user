@@ -3,5 +3,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
     <UseEmulator>true</UseEmulator>
+    <CommandLineArguments>oudb.database.windows.net capDB hawk5461 CapSQLDB2019</CommandLineArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <CommandLineArguments>oudb.database.windows.net capDB hawk5461 CapSQLDB2019</CommandLineArguments>
+    <UseSimulator>false</UseSimulator>
+    <UseEmulator>false</UseEmulator>
+    <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
+    <DeployOptionalPackages>false</DeployOptionalPackages>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DebugEngines>
+    </DebugEngines>
+    <BackgroundTaskDebugEngines>
+    </BackgroundTaskDebugEngines>
+    <CreateCleanLayout>false</CreateCleanLayout>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <CommandLineArguments>oudb.database.windows.net capDB hawk5461 CapSQLDB2019</CommandLineArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <CommandLineArguments>oudb.database.windows.net capDB hawk5461 CapSQLDB2019</CommandLineArguments>
   </PropertyGroup>
 </Project>

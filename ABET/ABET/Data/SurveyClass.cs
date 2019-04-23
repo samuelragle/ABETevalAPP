@@ -4,12 +4,12 @@ using System.Text;
 
 namespace ABET.Data
 {
-    class SurveyClass
+    public class SurveyClass
     {
         private Section section;
-        private int id;
+        internal long id;
 
-        public SurveyClass(Section section, int id)
+        public SurveyClass(Section section, long id)
         {
             this.section = section;
             this.id = id;
