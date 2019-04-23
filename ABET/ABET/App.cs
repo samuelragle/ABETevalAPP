@@ -16,14 +16,21 @@ namespace ABET
         {
 
             
+
             if (!LoggedIn)
             {
                 MainPage = new NavigationPage(new LoginPage());
             }
             else
             {
+                
+               
+                
+
+
                 MainPage = new MainPage();
-                Session = new Session(connString,"Fall 2015");
+               
+                Session = new Session(connString, "Fall 2015");
             }
             
 
