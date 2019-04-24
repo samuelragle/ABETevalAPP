@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Xamarin.Forms;
 using ABET.Data;
+using System.Collections;
 
 namespace ABET
 {
@@ -18,6 +18,7 @@ namespace ABET
         Grid surveyResults = new Grid();
         StackLayout resultStack = new StackLayout();
         ScrollView resultScroll = new ScrollView();
+        Hashtable outcomesTable = new Hashtable(); //TODO: Use a SortedDictionary to replace this later
         ListView classView;
         public static Picker semesterPicker;
         Session session;
@@ -80,11 +81,11 @@ namespace ABET
 
 
             surveyResults.ColumnDefinitions = new ColumnDefinitionCollection()
-                    {
-                        new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[0].Width},
-                        new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[1].Width},
-                        new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[2].Width},
-                    };
+            {
+                new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[0].Width},
+                new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[1].Width},
+                new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[2].Width},
+            };
 
             surveyResults.RowDefinitions = new RowDefinitionCollection();
 
@@ -97,7 +98,7 @@ namespace ABET
                 surveyResults.Children.Add(new Label() { Text = "4" }, 2, i);
 
             }
-
+            
 
 
             resultScroll.Content = surveyResults;
@@ -105,10 +106,12 @@ namespace ABET
             resultStack.Children.Add(resultScroll); // scrollview in stackLayout
 
 
-
+            
             //Controls the class selection
             classView = new ListView();
+            session.PullSections((Semester)semesterPicker.SelectedItem);
             classView.ItemsSource = session.Classes;
+            classView.ItemSelected += OnClassSelected;
             
 
             //populates top left of results page
@@ -129,13 +132,28 @@ namespace ABET
         }
 
         
-
+        public void OnClassSelected(object sender, EventArgs e)
+        {
+            outcomesTable.Clear();
+            // Populate raw data here
+            Class selectedClass = (Class)((ListView)sender).SelectedItem;
+            foreach (Survey s in selectedClass.Surveys)
+            {
+                if (!outcomesTable.ContainsKey(s.surveyClass))
+                {
+                    outcomesTable.Add(s.surveyClass, new List<Survey>());
+                }
+                ((List<Survey>)outcomesTable[s.surveyClass]).Add(s);
+            }
+            
+        }
         //Changes the list of engineering classes based on the semester chosen from the picker
         public void PickerSemester(object sender, EventArgs e)
         {
 
             if (semesterPicker.SelectedItem != null)
             {
+                classView.ItemsSource = null; // Because it won't update without being set to a list of a different pointer
                 session.PullSections((Semester)semesterPicker.SelectedItem);
                 classView.ItemsSource = session.Classes;
             }

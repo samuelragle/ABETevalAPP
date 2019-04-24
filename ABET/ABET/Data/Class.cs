@@ -7,7 +7,7 @@ namespace ABET.Data
 {
     public class Class
     {
-        private Section Section { get; set; }
+        internal Section Section { get; set; }
         internal List<Survey> Surveys { get; set; }
 
         public Class(Section section, List<Survey> surveys)

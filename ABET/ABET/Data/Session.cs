@@ -12,6 +12,7 @@ namespace ABET.Data
     {
         public List<Class> Classes;
         private List<Class> SelectedClasses;
+        public List<SurveyClass> Outcomes;
         public List<Survey> sClassSurveys;
         public List<Semester> Semesters;
         private static SqlConnection conn;
@@ -19,6 +20,7 @@ namespace ABET.Data
         public Session(string connString, string semester)
         {
             SelectedClasses = new List<Class>();
+            Outcomes = new List<SurveyClass>();
             sClassSurveys = new List<Survey>();
             Semesters = new List<Semester>();
             Classes = new List<Class>();
@@ -142,7 +144,7 @@ namespace ABET.Data
             {
                 results[i].goal = PullGoal(ABETIDs[i]);
             }
-            return null;
+            return results;
         }
 
         private ABETGoal PullGoal(short ABETID)

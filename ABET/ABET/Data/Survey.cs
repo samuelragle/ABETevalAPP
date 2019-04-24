@@ -6,7 +6,7 @@ namespace ABET.Data
 {
     public class Survey
     {
-        private SurveyClass surveyClass;
+        internal SurveyClass surveyClass;
         internal ABETGoal goal;
         internal int response;
 
@@ -16,6 +16,5 @@ namespace ABET.Data
             this.goal = goal;
             this.response = response;
         }
-        
     }
 }

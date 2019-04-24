@@ -14,5 +14,20 @@ namespace ABET.Data
             this.section = section;
             this.id = id;
         }
+        public override string ToString()
+        {
+            return id.ToString();
+        }
+        public override bool Equals(object obj)
+        {
+            var @class = obj as SurveyClass;
+            return @class != null &&
+                   id == @class.id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1877310944 + id.GetHashCode();
+        }
     }
 }

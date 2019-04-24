@@ -30,5 +30,9 @@ namespace ABET.Data
             description = (string) info.GetValue("desc", typeof(string));
             id = (short) info.GetValue("id", typeof(short));
         }
+        public override string ToString()
+        {
+            return goal + ": " + description;
+        }
     }
 }
