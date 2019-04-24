@@ -75,28 +75,9 @@ namespace ABET
             semesterPicker.SelectedIndex = 0;
             semesterPicker.SelectedIndexChanged += PickerSemester;
             
-            ABETquestions.Children.Add(new Label() { Text = "Outcome 1" }, 0, 0);
-            ABETquestions.Children.Add(new Label() { Text = "Outcome 2" }, 1, 0);
-            ABETquestions.Children.Add(new Label() { Text = "Outcome 3" }, 2, 0);
-
-            surveyResults.ColumnDefinitions = new ColumnDefinitionCollection()
-            {
-                new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[0].Width},
-                new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[1].Width},
-                new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[2].Width},
-            };
+            surveyResults.ColumnDefinitions = new ColumnDefinitionCollection();
 
             surveyResults.RowDefinitions = new RowDefinitionCollection();
-
-            //create a new row for each object in datacollection
-            for (int i = 0; i < 20; i++)
-            {
-                surveyResults.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                surveyResults.Children.Add(new Label() { Text = "1" }, 0, i);
-                surveyResults.Children.Add(new Label() { Text = "3" }, 1, i);
-                surveyResults.Children.Add(new Label() { Text = "4" }, 2, i);
-
-            }
             
 
 
