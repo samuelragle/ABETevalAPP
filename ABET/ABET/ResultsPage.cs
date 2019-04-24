@@ -66,7 +66,7 @@ namespace ABET
                 new ColumnDefinition(){Width = GridLength.Star},
                 new ColumnDefinition(){Width = GridLength.Star},
             };
-
+            
 
             //depending on what sql select statements might have to change this
             session.PullSemesters();
@@ -78,7 +78,6 @@ namespace ABET
             ABETquestions.Children.Add(new Label() { Text = "Outcome 1" }, 0, 0);
             ABETquestions.Children.Add(new Label() { Text = "Outcome 2" }, 1, 0);
             ABETquestions.Children.Add(new Label() { Text = "Outcome 3" }, 2, 0);
-
 
             surveyResults.ColumnDefinitions = new ColumnDefinitionCollection()
             {
@@ -135,17 +134,34 @@ namespace ABET
         public void OnClassSelected(object sender, EventArgs e)
         {
             outcomesTable.Clear();
-            // Populate raw data here
-            Class selectedClass = (Class)((ListView)sender).SelectedItem;
+            ABETquestions.Children.Clear();
+            ABETquestions.ColumnDefinitions.Clear();
+            surveyResults.ColumnDefinitions.Clear();
+            surveyResults.Children.Clear();
+           // Populate raw data here
+           Class selectedClass = (Class)((ListView)sender).SelectedItem;
             foreach (Survey s in selectedClass.Surveys)
             {
-                if (!outcomesTable.ContainsKey(s.surveyClass))
+                if (!outcomesTable.Contains(s.goal))
                 {
-                    outcomesTable.Add(s.surveyClass, new List<Survey>());
+                    outcomesTable.Add(s.goal, new List<Survey>());
                 }
-                ((List<Survey>)outcomesTable[s.surveyClass]).Add(s);
+                ((List<Survey>)outcomesTable[s.goal]).Add(s);
             }
-            
+            int index = 0;
+            foreach (ABETGoal a in outcomesTable.Keys)
+            {
+                ABETquestions.Children.Add(new Label() { Text = a.ToString() }, index, 0);
+                ABETquestions.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Star });
+                surveyResults.ColumnDefinitions.Add(new ColumnDefinition() { Width = ABETquestions.ColumnDefinitions[index].Width });
+                int vindex = 0;
+                foreach(Survey s in (List<Survey>)outcomesTable[a])
+                {
+                    surveyResults.Children.Add(new Label() { Text = s.response.ToString() }, index, vindex);
+                    vindex++;
+                }
+                index++;
+            }
         }
         //Changes the list of engineering classes based on the semester chosen from the picker
         public void PickerSemester(object sender, EventArgs e)

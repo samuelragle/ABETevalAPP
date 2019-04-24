@@ -32,7 +32,25 @@ namespace ABET.Data
         }
         public override string ToString()
         {
-            return goal + ": " + description;
+            return id + ": " + description;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var goal = obj as ABETGoal;
+            return goal != null &&
+                   this.goal == goal.goal &&
+                   description == goal.description &&
+                   id == goal.id;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -716474745;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(goal);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(description);
+            hashCode = hashCode * -1521134295 + id.GetHashCode();
+            return hashCode;
         }
     }
 }
