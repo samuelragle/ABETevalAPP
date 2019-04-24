@@ -21,9 +21,7 @@ namespace ABET
             else
             {
                 MainPage = new MainPage();
-
             }
-            
 
         }
         internal static Session GetSession()

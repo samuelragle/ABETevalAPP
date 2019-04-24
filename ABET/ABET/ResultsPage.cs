@@ -5,41 +5,25 @@ using System.Linq;
 using System.Text;
 
 using Xamarin.Forms;
+using ABET.Data;
 
 namespace ABET
 {
     public class ResultsPage : ContentPage
     {
+        
         Grid classGrid = new Grid();
         Grid buttonGrid = new Grid();
-        TableView classTableView;
-        ListView infoListView;
-        TableSection switchCellTable;
-        List<string> semesterList;
-        List<Cell> temporarylist;
-        public static Picker picker;
+        Grid ABETquestions = new Grid();
+        Grid surveyResults = new Grid();
+        StackLayout resultStack = new StackLayout();
+        ScrollView resultScroll = new ScrollView();
+        ListView classView;
+        public static Picker semesterPicker;
         Session session;
 
-
-        //  General string array for temp use
-        string[] terms = new string[]
-        {
-            "Spring 2015",
-            "Fall 2015",
-            "Spring 2016",
-            "Fall 2016",
-            "Spring 2017",
-            "Fall 2017",
-            "Spring 2018",
-            "Fall 2018",
-        };
-        string[] classes = new string[]
-{
-            "Some engineering",
-            "Some engineering",
-            "Some engineering",
-            "Some engineering",
-};
+        
+        
 
         public ResultsPage()
         {
@@ -53,8 +37,6 @@ namespace ABET
 
             //Create the grid for the Buttons in the lower left panel
             buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             //Create the buttons to perform certain function son the information
@@ -64,14 +46,8 @@ namespace ABET
             rawButton.Text = "Raw Data";
             Button averageButton = new Button();
             averageButton.Text = "Average";
-            Button sButton = new Button();
-            sButton.Text = "Function";
-            Button vButton = new Button();
-            vButton.Text = "Function";
             buttonGrid.Children.Add(rawButton, 0, 0);
             buttonGrid.Children.Add(averageButton, 1, 0);
-            buttonGrid.Children.Add(sButton, 0, 1);
-            buttonGrid.Children.Add(vButton, 1, 1);
 
             //Events handlers when button is clicked
             //will call corresponding function
@@ -79,88 +55,92 @@ namespace ABET
             averageButton.Clicked += OnAverageSelected;
 
 
-            picker = new Picker();
-            semesterList = new List<string>();
-            infoListView = new ListView();
 
+            /** Create example results **/
 
-
-            //TODO
-            //really need these prepared statements
-            //  get the semesters to choose from
-            //      SELECT semester, year FROM semesters
-            //  get the courses for each semester
-            //      SELECT courseTitle, year FROM course, semesters WHERE semester = '___' and year = 
-            //  get the reponses for the courses
-            //      SELECT goal, reponse FROM surveys 
+            //Create grid for output. Do this for each question being displayed
+            ABETquestions.ColumnDefinitions = new ColumnDefinitionCollection()
+            {
+                new ColumnDefinition(){Width = GridLength.Star},
+                new ColumnDefinition(){Width = GridLength.Star},
+                new ColumnDefinition(){Width = GridLength.Star},
+            };
 
 
             //depending on what sql select statements might have to change this
             session.PullSemesters();
-            picker.ItemsSource = session.Semesters;
-            picker.SelectedIndex = 0;
-            picker.SelectedIndexChanged += PickerSemester;
+            semesterPicker = new Picker();
+            semesterPicker.ItemsSource = session.Semesters;
+            semesterPicker.SelectedIndex = 0;
+            semesterPicker.SelectedIndexChanged += PickerSemester;
+            
+            ABETquestions.Children.Add(new Label() { Text = "Outcome 1" }, 0, 0);
+            ABETquestions.Children.Add(new Label() { Text = "Outcome 2" }, 1, 0);
+            ABETquestions.Children.Add(new Label() { Text = "Outcome 3" }, 2, 0);
 
 
-            //Controls the class picker selection
-            classTableView = new TableView
+            surveyResults.ColumnDefinitions = new ColumnDefinitionCollection()
+                    {
+                        new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[0].Width},
+                        new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[1].Width},
+                        new ColumnDefinition(){Width = ABETquestions.ColumnDefinitions[2].Width},
+                    };
+
+            surveyResults.RowDefinitions = new RowDefinitionCollection();
+
+            //create a new row for each object in datacollection
+            for (int i = 0; i < 20; i++)
             {
-                Root = new TableRoot { },
-                Intent = TableIntent.Settings
-            };
+                surveyResults.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                surveyResults.Children.Add(new Label() { Text = "1" }, 0, i);
+                surveyResults.Children.Add(new Label() { Text = "3" }, 1, i);
+                surveyResults.Children.Add(new Label() { Text = "4" }, 2, i);
 
-            switchCellTable = new TableSection(picker.SelectedItem.ToString()) { };
-            foreach (var element in session.Classes)
-            {
-                switchCellTable.Add(new SwitchCell() { Text = element.ToString() });
             }
-            classTableView.Root.Add(switchCellTable);
 
+
+
+            resultScroll.Content = surveyResults;
+            resultStack.Children.Add(ABETquestions); //header grid view in stackLayout
+            resultStack.Children.Add(resultScroll); // scrollview in stackLayout
+
+
+
+            //Controls the class selection
+            classView = new ListView();
+            classView.ItemsSource = session.Classes;
+            
 
             //populates top left of results page
-            classGrid.Children.Add(infoListView, 0, 0);
-            Grid.SetRowSpan(infoListView, 2);
+            classGrid.Children.Add(resultStack, 0, 0);
+            Grid.SetRowSpan(resultStack, 2);
 
             //populates bottom left of the results page
             classGrid.Children.Add(buttonGrid, 0, 2);
 
             //populates top right of the result page
-            classGrid.Children.Add(picker, 1, 0);
+            classGrid.Children.Add(semesterPicker, 1, 0);
 
             //populates the bottom right
-            classGrid.Children.Add(classTableView, 1, 1);
-            Grid.SetRowSpan(classTableView, 2);
+            classGrid.Children.Add(classView, 1, 1);
+            Grid.SetRowSpan(classView, 2);
 
             Content = classGrid;
         }
 
-
-        //here are all the button, picker, and switch functionalities.
+        
 
         //Changes the list of engineering classes based on the semester chosen from the picker
         public void PickerSemester(object sender, EventArgs e)
         {
-            //populate the TableView section with a switchcell representing each 
-            //engineering class in the semester selected
-            if (picker.SelectedItem != null && picker.SelectedItem.ToString() != classTableView.Root.ToString())
+
+            if (semesterPicker.SelectedItem != null)
             {
-                session.PullSections((Semester)picker.SelectedItem);
-                classGrid.Children.RemoveAt(3);
-                classTableView = new TableView
-                {
-                    Root = new TableRoot { },
-                    Intent = TableIntent.Settings
-                };
-
-                switchCellTable = new TableSection(picker.SelectedItem.ToString());
-                foreach (var element in session.Classes)
-                {
-                    switchCellTable.Add(new SwitchCell() { Text = element.ToString()});
-                }
-                classTableView.Root.Add(switchCellTable);
-                classGrid.Children.Add(classTableView, 1, 1);
-
+                session.PullSections((Semester)semesterPicker.SelectedItem);
+                classView.ItemsSource = session.Classes;
             }
+            //remove all the current classes in the classView object
+            //populate classView with all classes in the semester chosen by the picker            
         }
 
         //Performs the Average Function on the selected classes
@@ -168,37 +148,21 @@ namespace ABET
         {
             //Populate the top left panel with the results of the function 
             //performed on the classes (switchcells) selected in the bottom left panel
-            infoListView.ItemsSource = new string[]
-            {
-                "average",
-            };
+            
 
         }
 
         //Outputs the complete responses from a selected class
         public void OnRawDataClicked(object sender, EventArgs e)
         {
-            //Populate the top left panel with the results of the function 
-            //performed on the classes (switchcells) selected in the bottom left panel
-            temporarylist = switchCellTable.ToList();
-            List<string> temporary = new List<string>();
-            foreach (SwitchCell element in temporarylist)
-            {
-                if (element.On)
-                {
-                    temporary.Add(element.Text.ToString());
-                }
-            }
-            if (temporary.Count == 0)
-            {
-                temporary.Add("empty");
-            }
-            infoListView.ItemsSource = temporary;
+            //Populate the top left panel with the results of the function similar to the example above
+
+            /** Update the ABET Questions at the top of the left panel **/
         }
         public static void UpdateSemesters(List<Semester> newSemesters)
         {
-            picker.ItemsSource = newSemesters;
-            picker.SelectedIndex = 0;
+            semesterPicker.ItemsSource = newSemesters;
+            semesterPicker.SelectedIndex = 0;
         }
     }
 }
