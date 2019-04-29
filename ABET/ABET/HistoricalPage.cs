@@ -8,13 +8,68 @@ using Xamarin.Forms;
 using Syncfusion.XlsIO;
 using Plugin.FilePicker;
 using Plugin.FilePicker.Abstractions;
+using ABET.Data;
 
 namespace ABET
 {
     public class HistoricalPage : ContentPage
     {
+        Grid buttonGrid = new Grid();
+        public static Picker semesterPicker;
+        public static Picker coursePicker;
+
         public HistoricalPage()
         {
+            //Create grid and add buttons
+            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
+            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
+            Button semAddButton = new Button();
+            semAddButton.Text = "Add";
+            Button couAddButton = new Button();
+            couAddButton.Text = "Add";
+            Button studentsButton = new Button();
+            studentsButton.Text = "Num Students";
+            Button button = new Button();
+            button.Text = "Load .xlsx";
+
+
+            //Placeholder lists for data
+            var list1 = new List<string>();
+            list1.Add("Something1");
+            var list2 = new List<string>();
+            list2.Add("Something2");
+
+            semesterPicker = new Picker();
+            semesterPicker.ItemsSource = list1;
+            semesterPicker.SelectedIndex = 0;
+            
+
+            
+            coursePicker = new Picker();
+            coursePicker.ItemsSource = list2;
+            coursePicker.SelectedIndex = 0;
+            
+
+            //Add buttons and pickers to grid
+            buttonGrid.Children.Add(semesterPicker, 0, 0);
+            buttonGrid.Children.Add(coursePicker, 0, 1);
+            buttonGrid.Children.Add(semAddButton, 1, 0);
+            buttonGrid.Children.Add(couAddButton, 1, 1);
+            buttonGrid.Children.Add(studentsButton, 0, 2);
+            buttonGrid.Children.Add(button, 0, 3);
+            
+            
+
+            Content = buttonGrid;
+
+
+
+
+            
             Label label = new Label
             {
                 Text = "",
@@ -22,22 +77,18 @@ namespace ABET
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.Center
             };
-            Button button = new Button
-            {
-                Text = "Load Historical Data",
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.Center
-            };
+            
             button.Clicked += OnButtonClicked;
 
-            Content = new StackLayout
+            /*Content = new StackLayout
             {
                 Children =
             {
                 button,
                 label
             }
-            };
+            
+            };*/
 
             async void OnButtonClicked(object sender, EventArgs args)
             {
