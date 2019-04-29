@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 
 using Xamarin.Forms;
-using ABET.Data;
 
 namespace ABET
 {
