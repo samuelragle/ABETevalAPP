@@ -20,12 +20,16 @@ namespace ABET
             Entry passwordEntry;
             Button loginButton;
 
+            double loginWidth = 300; // Change to be a function of the application width
             usernameEntry = new Entry();
             usernameEntry.Placeholder = "Username";
+            usernameEntry.WidthRequest = loginWidth; 
 
             passwordEntry = new Entry();
             passwordEntry.IsPassword = true;
             passwordEntry.Placeholder = "Password";
+            passwordEntry.IsPassword = true;
+            passwordEntry.WidthRequest = loginWidth;
 
             loginButton = new Button();
             loginButton.Text = "Login";
