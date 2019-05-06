@@ -9,7 +9,6 @@ namespace ABET
 {
     public class CourseAdditionPage : ContentPage
     {
-        StackLayout courseLayout = new StackLayout();
         Button submitButton = new Button();
         Entry departmentEntry = new Entry { Placeholder = "Department Name" };
         Entry courseNumEntry = new Entry { Placeholder = "Course Number" };
@@ -23,29 +22,47 @@ namespace ABET
         **/
         public CourseAdditionPage()
         {
-            submitButton.Text = "Submit";
 
-            courseLayout.Children.Add(departmentEntry);
-            courseLayout.Children.Add(courseNumEntry);
-            courseLayout.Children.Add(courseTitleEntry);
-            courseLayout.Children.Add(sectionNumEntry);
-            courseLayout.Children.Add(submitButton);
+            submitButton.WidthRequest = 300;
+            departmentEntry.WidthRequest = 300;
+            courseNumEntry.WidthRequest = 300;
+            courseTitleEntry.WidthRequest = 300;
+            sectionNumEntry.WidthRequest = 300;
+
+            submitButton.Text = "Submit";
 
             submitButton.Clicked += onSubmitClicked;
 
-            Content = courseLayout;
+            Content = new StackLayout
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                Spacing = 0,
+
+                Children = {
+                    departmentEntry,
+                    courseNumEntry,
+                    courseTitleEntry,
+                    sectionNumEntry,
+                    submitButton
+                }
+            };
 
         }
 
-        public void onSubmitClicked(object sender, EventArgs e)
+        public async void onSubmitClicked(object sender, EventArgs e)
         {
             /**
              pops the current page 
-             App.Current.MainPage.Navigation.PopAsync();
+             
 
              pull information and populate
-             Make sure year Entry box is 
+             Make sure the entries map the data tyupe they need to be stored to
             **/
+
+            await Navigation.PopAsync();
+
+            //update session object after updating database
         }
     }
 }

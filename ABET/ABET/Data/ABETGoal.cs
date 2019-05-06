@@ -32,7 +32,8 @@ namespace ABET.Data
         }
         public override string ToString()
         {
-            return id + ": " + description;
+            //return id + ": " + description;
+            return description;
         }
 
         public override bool Equals(object obj)

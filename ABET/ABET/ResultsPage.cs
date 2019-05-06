@@ -12,7 +12,7 @@ namespace ABET
     {
         
         Grid classGrid = new Grid();
-        Grid buttonGrid = new Grid();
+        StackLayout buttonStack = new StackLayout();
         Grid ABETquestions = new Grid();
         Grid surveyResults = new Grid();
         StackLayout resultStack = new StackLayout();
@@ -35,24 +35,30 @@ namespace ABET
             classGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
             classGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-            //Create the grid for the Buttons in the lower left panel
-            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            
 
             //Create the buttons to perform certain function son the information
             //along with some extra placeholder functions while we figure out what
             //other functions to include to the application
-            Button rawButton = new Button();
-            rawButton.Text = "Raw Data";
-            Button averageButton = new Button();
-            averageButton.Text = "Average";
-            buttonGrid.Children.Add(rawButton, 0, 0);
-            buttonGrid.Children.Add(averageButton, 1, 0);
+            Button outputButton = new Button();
+            outputButton.WidthRequest = 200;
+            outputButton.Text = "Output Selected Data";
+
+            //set layout for buttons in lower left
+            buttonStack = new StackLayout
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                Spacing = 0,
+
+                Children = {
+                    outputButton
+                }
+            };
 
             //Events handlers when button is clicked
             //will call corresponding function
-            rawButton.Clicked += OnRawDataClicked;
-            averageButton.Clicked += OnAverageSelected;
+            outputButton.Clicked += OnOutputClicked;
 
 
 
@@ -98,7 +104,7 @@ namespace ABET
             Grid.SetRowSpan(resultStack, 2);
 
             //populates bottom left of the results page
-            classGrid.Children.Add(buttonGrid, 0, 2);
+            classGrid.Children.Add(buttonStack, 0, 2);
 
             //populates top right of the result page
             classGrid.Children.Add(semesterPicker, 1, 0);
@@ -158,7 +164,7 @@ namespace ABET
         }
 
         //Performs the Average Function on the selected classes
-        public void OnAverageSelected(object sender, EventArgs e)
+        public void OnOutputClicked(object sender, EventArgs e)
         {
             //Populate the top left panel with the results of the function 
             //performed on the classes (switchcells) selected in the bottom left panel
@@ -166,13 +172,6 @@ namespace ABET
 
         }
 
-        //Outputs the complete responses from a selected class
-        public void OnRawDataClicked(object sender, EventArgs e)
-        {
-            //Populate the top left panel with the results of the function similar to the example above
-
-            /** Update the ABET Questions at the top of the left panel **/
-        }
         public static void UpdateSemesters(List<Semester> newSemesters)
         {
             semesterPicker.ItemsSource = newSemesters;

@@ -1,0 +1,4 @@
+MainPackage=C:\Users\Samuel Ragle\source\repos\ABET\ABETevalAPP\ABET\ABET.UWP\bin\x64\Release\ABET.UWP_1.0.0.0_x64.appx
+SymbolPackage=C:\Users\Samuel Ragle\source\repos\ABET\ABETevalAPP\ABET\ABET.UWP\AppPackages\ABET.UWP_1.0.0.0_Test\ABET.UWP_1.0.0.0_x64.appxsym
+ResourcePack=C:\Users\Samuel Ragle\source\repos\ABET\ABETevalAPP\ABET\ABET.UWP\bin\x64\Release\ABET.UWP_1.0.0.0_scale-100.appx
+ResourcePack=C:\Users\Samuel Ragle\source\repos\ABET\ABETevalAPP\ABET\ABET.UWP\bin\x64\Release\ABET.UWP_1.0.0.0_scale-400.appx

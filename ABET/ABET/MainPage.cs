@@ -20,12 +20,9 @@ namespace ABET
             
             ResultsPage resultsPage = new ResultsPage();
             resultsPage.Title = "Results";
-            QuizPage quizPage = new QuizPage();
-            quizPage.Title = "Quizzes";
             HistoricalPage historicalPage = new HistoricalPage();
-            historicalPage.Title = "Load Historical Data";
+            historicalPage.Title = "Load Data";
             Children.Add(resultsPage);
-            Children.Add(quizPage);
             Children.Add(historicalPage);
 
            

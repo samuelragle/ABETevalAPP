@@ -14,62 +14,24 @@ namespace ABET
 {
     public class HistoricalPage : ContentPage
     {
-        Grid buttonGrid = new Grid();
-        public static Picker semesterPicker;
-        public static Picker coursePicker;
+        Grid semesterGrid = new Grid();
+        Grid courseGrid = new Grid();
+        Grid studentGrid = new Grid();
+
+        Picker semesterPicker = new Picker();
+        Picker coursePicker = new Picker();
+        Entry numEntry = new Entry { Placeholder = "number of students" };
+        Button semAddButton = new Button();
+        Button couAddButton = new Button();
+        Button button = new Button();
+
+        Session session = App.GetSession();
 
         public HistoricalPage()
         {
-            //Create grid and add buttons
-            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
-            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
-            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
-            buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
-            Button semAddButton = new Button();
-            semAddButton.Text = "Add";
-            Button couAddButton = new Button();
-            couAddButton.Text = "Add";
-            Button studentsButton = new Button();
-            studentsButton.Text = "Num Students";
-            Button button = new Button();
-            button.Text = "Load .xlsx";
 
+            NavigationPage.SetHasNavigationBar(this, false);
 
-            //Placeholder lists for data
-            var list1 = new List<string>();
-            list1.Add("Something1");
-            var list2 = new List<string>();
-            list2.Add("Something2");
-
-            semesterPicker = new Picker();
-            semesterPicker.ItemsSource = list1;
-            semesterPicker.SelectedIndex = 0;
-            
-
-            
-            coursePicker = new Picker();
-            coursePicker.ItemsSource = list2;
-            coursePicker.SelectedIndex = 0;
-            
-
-            //Add buttons and pickers to grid
-            buttonGrid.Children.Add(semesterPicker, 0, 0);
-            buttonGrid.Children.Add(coursePicker, 0, 1);
-            buttonGrid.Children.Add(semAddButton, 1, 0);
-            buttonGrid.Children.Add(couAddButton, 1, 1);
-            buttonGrid.Children.Add(studentsButton, 0, 2);
-            buttonGrid.Children.Add(button, 0, 3);
-            
-            
-
-            Content = buttonGrid;
-
-
-
-
-            
             Label label = new Label
             {
                 Text = "",
@@ -77,18 +39,82 @@ namespace ABET
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.Center
             };
-            
+
+            semAddButton.Text = "Add";
+            couAddButton.Text = "Add";
+            button.Text = "Load .xlsx";
+
+            semAddButton.Clicked += OnAddSemesterClicked;
+            couAddButton.Clicked += OnAddCourseButton;
             button.Clicked += OnButtonClicked;
 
-            /*Content = new StackLayout
-            {
-                Children =
-            {
-                button,
-                label
-            }
+
+
+
+            semesterPicker.ItemsSource = session.Semesters;
+            semesterPicker.SelectedIndex = 0;
+            /**
+             * 
+             * NEED A LIST OF ALL COURSES IN THE DATABASE IN THE SESSION OBJECT
+             * AND A TOSTRING() FOR COURSE OBJECTS SO THAT THE USERS CAN SELECT 
+             * FROM THE LIST OF ALL POSSIBLE COURSES WHEN ADDING DATA
+             * 
+             * */
+            //coursePicker.ItemsSource = session.Courses;
+
+            //Placeholder for Courses
+            var list2 = new List<string>();
+            list2.Add("CS 2613");
+            list2.Add("CS 4473");
+            list2.Add("CS 4273");
+            list2.Add("CS 4013");
+
+            coursePicker.ItemsSource = list2;
+            coursePicker.SelectedIndex = 0;
+
+
+            //Create grid and add buttons
+
+            semesterGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            semesterGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
+            semesterGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
+
+            courseGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            courseGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
+            courseGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
+
+            studentGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            studentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
+            studentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
             
-            };*/
+            
+            
+            
+
+
+            //Add buttons and pickers to grid
+            semesterGrid.Children.Add(semesterPicker, 0, 0);
+            semesterGrid.Children.Add(semAddButton, 1, 0);
+            courseGrid.Children.Add(coursePicker, 0, 0);
+            courseGrid.Children.Add(couAddButton, 1, 0);
+            studentGrid.Children.Add(numEntry, 0, 0);
+
+
+            Content = new StackLayout
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                Spacing = 0,
+
+                Children = {
+                    semesterGrid,
+                    courseGrid,
+                    studentGrid,
+                    button
+                }
+            };
+
+            
 
             async void OnButtonClicked(object sender, EventArgs args)
             {
@@ -299,6 +325,23 @@ namespace ABET
                     label.Text = ex.Message;
                 }
             }
+
+            async void OnAddSemesterClicked(object sender, EventArgs args)
+            {
+                await Navigation.PushAsync(new SemesterAdditionPage());
+                semesterPicker.ItemsSource = session.Semesters;
+
+            }
+
+            async void OnAddCourseButton(object sender, EventArgs args)
+            {
+                await Navigation.PushAsync(new CourseAdditionPage());
+                //coursePicker.ItemsSource = session.Courses;
+
+            }
+
         }
+
+        
     }
 }
