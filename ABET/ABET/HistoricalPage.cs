@@ -17,10 +17,12 @@ namespace ABET
         Grid semesterGrid = new Grid();
         Grid courseGrid = new Grid();
         Grid studentGrid = new Grid();
+        Grid sectionGrid = new Grid();
 
         Picker semesterPicker = new Picker();
         Picker coursePicker = new Picker();
-        Entry numEntry = new Entry { Placeholder = "number of students" };
+        Entry numEntry = new Entry { Placeholder = "Number of students" };
+        Entry sectionNumEntry = new Entry { Placeholder = "Section Number" };
         Button semAddButton = new Button();
         Button couAddButton = new Button();
         Button button = new Button();
@@ -43,6 +45,7 @@ namespace ABET
             semAddButton.Text = "Add";
             couAddButton.Text = "Add";
             button.Text = "Load .xlsx";
+
 
             semAddButton.Clicked += OnAddSemesterClicked;
             couAddButton.Clicked += OnAddCourseButton;
@@ -86,10 +89,14 @@ namespace ABET
             studentGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
             studentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
             studentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
-            
-            
-            
-            
+
+            sectionGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            sectionGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
+            sectionGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150) });
+
+
+
+
 
 
             //Add buttons and pickers to grid
@@ -98,6 +105,8 @@ namespace ABET
             courseGrid.Children.Add(coursePicker, 0, 0);
             courseGrid.Children.Add(couAddButton, 1, 0);
             studentGrid.Children.Add(numEntry, 0, 0);
+            sectionGrid.Children.Add(sectionNumEntry, 0, 0);
+
 
 
             Content = new StackLayout
@@ -109,6 +118,7 @@ namespace ABET
                 Children = {
                     semesterGrid,
                     courseGrid,
+                    sectionGrid,
                     studentGrid,
                     button
                 }
@@ -312,7 +322,7 @@ namespace ABET
                         }
 
                         // Print label
-                        label.Text = "Input sucessfull.";
+                        label.Text = "Input sucessful.";
 
                         // Close workbook
                         workbook.Close();

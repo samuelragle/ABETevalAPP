@@ -12,6 +12,7 @@ namespace ABET
 
         Button submitButton = new Button();
         Entry yearEntry = new Entry { Placeholder = "Year" };
+
         public static Picker seasonPicker = new Picker();
 
         /**
@@ -20,16 +21,21 @@ namespace ABET
         **/
         public SemesterAdditionPage()
         {
+
+            NavigationPage.SetHasNavigationBar(this, false);
+
+            seasonPicker = new Picker();
+            seasonPicker.Items.Add("Spring");
+            seasonPicker.Items.Add("Summer");
+            seasonPicker.Items.Add("Fall");
+            seasonPicker.Items.Add("Winter");
             submitButton.Text = "Submit";
 
             submitButton.WidthRequest = 300;
             yearEntry.WidthRequest = 300;
             seasonPicker.WidthRequest = 300;
             
-            seasonPicker.Items.Add("Spring");
-            seasonPicker.Items.Add("Summer");
-            seasonPicker.Items.Add("Fall");
-            seasonPicker.Items.Add("Winter");
+            
             seasonPicker.SelectedIndex = 0;
             
 

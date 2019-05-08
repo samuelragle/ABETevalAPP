@@ -5,6 +5,13 @@ using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 using System.Collections;
+using Syncfusion.XlsIO;
+using Plugin.FilePicker;
+using Plugin.FilePicker.Abstractions;
+using System.IO;
+using Xamarin.Forms.PlatformConfiguration;
+using Windows.Storage.Pickers;
+using Windows.Storage;
 
 namespace ABET
 {
@@ -20,6 +27,7 @@ namespace ABET
         Hashtable outcomesTable = new Hashtable(); //TODO: Use a SortedDictionary to replace this later
         ListView classView;
         public static Picker semesterPicker;
+        Button outputButton = new Button();
         Session session;
 
         
@@ -40,7 +48,7 @@ namespace ABET
             //Create the buttons to perform certain function son the information
             //along with some extra placeholder functions while we figure out what
             //other functions to include to the application
-            Button outputButton = new Button();
+            
             outputButton.WidthRequest = 200;
             outputButton.Text = "Output Selected Data";
 
@@ -164,11 +172,24 @@ namespace ABET
         }
 
         //Performs the Average Function on the selected classes
-        public void OnOutputClicked(object sender, EventArgs e)
+        public async void OnOutputClicked(object sender, EventArgs e)
         {
             //Populate the top left panel with the results of the function 
             //performed on the classes (switchcells) selected in the bottom left panel
             
+            FileData fileData = await CrossFilePicker.Current.PickFile();
+            bool saved = await CrossFilePicker.Current.SaveFile(fileData);
+
+            /**
+            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+            filePath = filePath + "\\SomeRando.xlsx";
+            File.Create(filePath);
+            File.SetAttributes(filePath, FileAttributes.Normal);
+
+            FileStream fileStream = File.Create(filePath);
+            */
+
 
         }
 

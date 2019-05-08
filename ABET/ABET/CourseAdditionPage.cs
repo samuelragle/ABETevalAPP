@@ -13,7 +13,7 @@ namespace ABET
         Entry departmentEntry = new Entry { Placeholder = "Department Name" };
         Entry courseNumEntry = new Entry { Placeholder = "Course Number" };
         Entry courseTitleEntry = new Entry { Placeholder = "Course Title" };
-        Entry sectionNumEntry = new Entry { Placeholder = "Section Number" };
+        
 
 
         /**
@@ -22,12 +22,12 @@ namespace ABET
         **/
         public CourseAdditionPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
 
             submitButton.WidthRequest = 300;
             departmentEntry.WidthRequest = 300;
             courseNumEntry.WidthRequest = 300;
             courseTitleEntry.WidthRequest = 300;
-            sectionNumEntry.WidthRequest = 300;
 
             submitButton.Text = "Submit";
 
@@ -43,7 +43,6 @@ namespace ABET
                     departmentEntry,
                     courseNumEntry,
                     courseTitleEntry,
-                    sectionNumEntry,
                     submitButton
                 }
             };
