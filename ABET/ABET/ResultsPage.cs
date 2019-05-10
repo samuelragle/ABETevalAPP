@@ -12,6 +12,8 @@ using System.IO;
 using Xamarin.Forms.PlatformConfiguration;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using System.Diagnostics;
+
 
 namespace ABET
 {
@@ -29,6 +31,7 @@ namespace ABET
         public static Picker semesterPicker;
         Button outputButton = new Button();
         Session session;
+        double averages = 0;
 
         
         
@@ -50,7 +53,7 @@ namespace ABET
             //other functions to include to the application
             
             outputButton.WidthRequest = 200;
-            outputButton.Text = "Output Selected Data";
+            outputButton.Text = "Delete Selected Data";
 
             //set layout for buttons in lower left
             buttonStack = new StackLayout
@@ -127,6 +130,7 @@ namespace ABET
         
         public void OnClassSelected(object sender, EventArgs e)
         {
+            
             outcomesTable.Clear();
             ABETquestions.Children.Clear();
             ABETquestions.ColumnDefinitions.Clear();
@@ -148,6 +152,7 @@ namespace ABET
             int index = 0;
             foreach (ABETGoal a in outcomesTable.Keys)
             {
+                averages = 0;
                 ABETquestions.Children.Add(new Label() { Text = a.ToString() }, index, 0);
                 ABETquestions.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Star });
                 surveyResults.ColumnDefinitions.Add(new ColumnDefinition() { Width = ABETquestions.ColumnDefinitions[index].Width });
@@ -182,21 +187,8 @@ namespace ABET
         //Performs the Average Function on the selected classes
         public async void OnOutputClicked(object sender, EventArgs e)
         {
-            //Populate the top left panel with the results of the function 
-            //performed on the classes (switchcells) selected in the bottom left panel
             
-            FileData fileData = await CrossFilePicker.Current.PickFile();
-            bool saved = await CrossFilePicker.Current.SaveFile(fileData);
-
-            /**
-            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
-            filePath = filePath + "\\SomeRando.xlsx";
-            File.Create(filePath);
-            File.SetAttributes(filePath, FileAttributes.Normal);
-
-            FileStream fileStream = File.Create(filePath);
-            */
+            
 
 
         }

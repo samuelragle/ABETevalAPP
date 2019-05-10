@@ -14,6 +14,9 @@ namespace ABET
 
         public App()
         {
+
+            //Add Credentials
+            /*
             if (!LoggedIn)
             {
                 MainPage = new NavigationPage(new LoginPage());
@@ -22,6 +25,9 @@ namespace ABET
             {
                 MainPage = new MainPage();
             }
+            */
+
+            MainPage = new NavigationPage(new MainPage());
 
         }
         internal static Session GetSession()

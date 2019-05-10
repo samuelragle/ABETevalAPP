@@ -158,7 +158,7 @@ namespace ABET
 
                 //THESE NEEED TO GO INTO DB
                 Section section;
-                SurveyClass surveyClass;
+                List<SurveyClass> surveyClasses = new List<SurveyClass>();
                 List<Survey> surveyResponses;
                 List<ABETGoal> surveyGoals;
 
@@ -242,8 +242,13 @@ namespace ABET
                                  * Has Section object, found above and id
                                  */
 
-                                //NEED TO FIGURE OUT ID
-                                surveyClass = new SurveyClass(section, 0);
+                                
+
+                                for (int i = 0; i < numStudents; ++i)
+                                {
+                                    //NEED TO FIGURE OUT ID
+                                    surveyClasses.Add(new SurveyClass(section, 0));
+                                }
 
                                 /*
                                  * Survey info. Has survey class obj, abet goal obj, response
@@ -276,7 +281,7 @@ namespace ABET
                                         try
                                         {
                                             response = worksheet.GetValueRowCol(j, i).ToString();
-                                            surveyResponses.Add(new Survey(surveyClass, surveyGoals[i - 2], Int32.Parse(response)));
+                                            surveyResponses.Add(new Survey(surveyClasses[i-2], surveyGoals[i - 2], Int32.Parse(response)));
                                         }
                                         catch (FormatException)
                                         {
@@ -293,6 +298,7 @@ namespace ABET
                                  **/
                                  
 
+                                /*
                                 Debug.Print(section.ToString());
                                 Debug.Print("\n");
                                 Debug.Print("\n");
@@ -311,6 +317,7 @@ namespace ABET
                                     Debug.Print("\n");
                                 }
                                 Debug.Print("\n");
+                                */
 
                             }
                         }
@@ -355,8 +362,6 @@ namespace ABET
 
                             //NEED TO FIGURE OUT ID
                             section = new Section(course, semester, sectionNum, studentNum, 0);
-                            //NEED TO FIGURE OUT ID
-                            surveyClass = new SurveyClass(section, 0);
 
                             // Gather responses for each goal
                             numColumns = surveyGoals.Count;
@@ -369,6 +374,14 @@ namespace ABET
                             {
                                 numRows++;
                                 startingRow++;
+
+                            }
+
+                            //Create a SurveyClass for each row
+                            for (int i = 0; i < numRows; ++i)
+                            {
+                                //NEED TO FIGURE OUT ID
+                                surveyClasses.Add(new SurveyClass(section, 0));
                             }
 
                             // Next get responses
@@ -379,7 +392,7 @@ namespace ABET
                                     try
                                     {
                                         response = worksheet.GetValueRowCol(j, i).ToString();
-                                        surveyResponses.Add(new Survey(surveyClass, surveyGoals[i - 2], Int32.Parse(response)));
+                                        surveyResponses.Add(new Survey(surveyClasses[i-2], surveyGoals[i - 2], Int32.Parse(response)));
                                     }
                                     catch (FormatException)
                                     {
@@ -391,9 +404,6 @@ namespace ABET
                             }
                             
                             Debug.Print(section.ToString());
-                            Debug.Print("\n");
-                            Debug.Print("\n");
-                            Debug.Print(surveyClass.ToString());
                             Debug.Print("\n");
                             Debug.Print("\n");
                             for (int pennie = 0; pennie < surveyGoals.Count; ++pennie)
