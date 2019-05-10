@@ -157,7 +157,7 @@ namespace ABET
 
 
                 //THESE NEEED TO GO INTO DB
-                Section section;
+                List<Section> section = new List<Section>();
                 List<SurveyClass> surveyClasses = new List<SurveyClass>();
                 List<Survey> surveyResponses;
                 List<ABETGoal> surveyGoals;
@@ -202,7 +202,7 @@ namespace ABET
                                     outcomeList.Add(outcome);
                                     goalAscii++;
                                     outcome = worksheet.Range[goalAscii + "1"].Text;
-                                }                             
+                                }
 
                                 /* 
                                  * Course info. Has department, courseNum, course title, id
@@ -213,8 +213,8 @@ namespace ABET
                                 courseNum = Int32.Parse(courseRawText.Split(' ')[1]);
                                 //Debug.Print(courseRawText);
                                 //Debug.Print("\n");
-                                
-                                
+
+
 
                                 // Get student count to later check if correct amount of students answered. 
                                 // This was just how many students answered, not the amount in the class.
@@ -235,19 +235,19 @@ namespace ABET
                                 }
 
                                 //NEED TO FIGURE OUT ID
-                                section = new Section(course, semester, 0, 0, 0);   // I do not have sectionNum, student count or ID so they are 0 for now
+                                section.Add(new Section(course, semester, 0, 0, 0));   // I do not have sectionNum, student count or ID so they are 0 for now
 
                                 /* 
                                  * Survey class info.
                                  * Has Section object, found above and id
                                  */
 
-                                
+
 
                                 for (int i = 0; i < numStudents; ++i)
                                 {
                                     //NEED TO FIGURE OUT ID
-                                    surveyClasses.Add(new SurveyClass(section, 0));
+                                    surveyClasses.Add(new SurveyClass(section[s], 0));
                                 }
 
                                 /*
@@ -281,7 +281,7 @@ namespace ABET
                                         try
                                         {
                                             response = worksheet.GetValueRowCol(j, i).ToString();
-                                            surveyResponses.Add(new Survey(surveyClasses[i-2], surveyGoals[i - 2], Int32.Parse(response)));
+                                            surveyResponses.Add(new Survey(surveyClasses[i - 2], surveyGoals[i - 2], Int32.Parse(response)));
                                         }
                                         catch (FormatException)
                                         {
@@ -296,7 +296,7 @@ namespace ABET
                                  * No section listed on excel files.
                                  * The list of surveys comes from the Survey objects parsed below
                                  **/
-                                 
+
 
                                 /*
                                 Debug.Print(section.ToString());
@@ -353,7 +353,7 @@ namespace ABET
 
                                 sectionNum = Convert.ToInt32(sectionNumEntry.Text);
 
-                                section = new Section(course, semester, sectionNum, studentNum, 0);
+
                             }
                             catch (FormatException)
                             {
@@ -361,14 +361,14 @@ namespace ABET
                             }
 
                             //NEED TO FIGURE OUT ID
-                            section = new Section(course, semester, sectionNum, studentNum, 0);
+                            section.Add(new Section(course, semester, sectionNum, studentNum, 0));
 
                             // Gather responses for each goal
                             numColumns = surveyGoals.Count;
                             numRows = 0;
                             startingRow = 2;
                             response = string.Empty;
-  
+
                             // First get the number of rows, starting after header
                             while (!worksheet.Range["B" + startingRow].IsBlank)
                             {
@@ -381,7 +381,7 @@ namespace ABET
                             for (int i = 0; i < numRows; ++i)
                             {
                                 //NEED TO FIGURE OUT ID
-                                surveyClasses.Add(new SurveyClass(section, 0));
+                                surveyClasses.Add(new SurveyClass(section[0], 0));
                             }
 
                             // Next get responses
@@ -392,17 +392,18 @@ namespace ABET
                                     try
                                     {
                                         response = worksheet.GetValueRowCol(j, i).ToString();
-                                        surveyResponses.Add(new Survey(surveyClasses[i-2], surveyGoals[i - 2], Int32.Parse(response)));
+                                        surveyResponses.Add(new Survey(surveyClasses[i - 2], surveyGoals[i - 2], Int32.Parse(response)));
                                     }
                                     catch (FormatException)
                                     {
-                                        
+
                                     }
                                     // Survey survey = new Survey(surveyClass, goal, response); 
                                     // Add survey obj to survey responses list
                                 }
                             }
-                            
+
+                            /*
                             Debug.Print(section.ToString());
                             Debug.Print("\n");
                             Debug.Print("\n");
@@ -418,15 +419,15 @@ namespace ABET
                                 Debug.Print("\n");
                             }
                             Debug.Print("\n");
-
+                            */
 
                         }
 
 
                         // Print label
                         label.Text = "Input sucessful.";
-                        
-                        
+
+
 
                         // Close workbook
                         workbook.Close();
