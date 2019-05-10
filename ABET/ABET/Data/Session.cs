@@ -26,7 +26,25 @@ namespace ABET.Data
             conn.Open();
 
         }
+        internal long InsertSurveyClass(int sectionNum)
+        {
+            string query = "INSERT INTO surveys_class VALUES (@section); SELECT SCOPE_IDENTITY(); ";
+            long id = -1;
+            using (SqlCommand command = new SqlCommand(query, conn))
+            {
 
+                command.Parameters.AddWithValue("@section", sectionNum);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        id = (long)reader.GetValue(0);
+                        System.Diagnostics.Debug.WriteLine(id);
+                    }
+                }
+            }
+            return id;
+        }
         internal bool InsertCourse(string department, int courseNum, string courseTitle)
         {
             string query = "INSERT INTO course VALUES (@department,@courseNum,@courseTitle)";
