@@ -20,6 +20,15 @@ namespace ABET.Data
             StudentCount = studentCount;
             ID = id;
         }
+        public Section(Course course, Semester semester, int sectionNum, int studentCount, int id, List<SurveyClass> lsc)
+        {
+            Course = course;
+            Semester = semester;
+            SectionNum = sectionNum;
+            StudentCount = studentCount;
+            ID = id;
+            SurveyClasses = lsc;
+        }
         public override string ToString()
         {
             return Course.CourseTitle + " " + Semester.semester + " " + Semester.year;

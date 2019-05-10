@@ -26,6 +26,36 @@ namespace ABET.Data
             conn.Open();
 
         }
+        internal long InsertSection(Course course, Semester semester, int sectionNum, int studentCount)
+        {
+            string query = "INSERT INTO section VALUES (@course, semester, @sectionNum, @studentCount)";
+            long id = -1;
+            using (SqlCommand command = new SqlCommand(query, conn))
+            {
+
+                command.Parameters.AddWithValue("@course", course.ID);
+                command.Parameters.AddWithValue("@semester", semester.id);
+                command.Parameters.AddWithValue("@sectionNum", sectionNum);
+                command.Parameters.AddWithValue("@studentCount", studentCount);
+                int result = command.ExecuteNonQuery();
+                if (result < 0)
+                    return -1;
+               
+            }
+            query = "SELECT SCOPE_IDENTITY()";
+            using (SqlCommand command = new SqlCommand(query, conn))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        id = (long)reader.GetValue(0);
+                        System.Diagnostics.Debug.WriteLine(id);
+                    }
+                }
+            }
+            return id;
+        }
         internal long InsertSurveyClass(int sectionNum)
         {
             string query = "INSERT INTO surveys_class VALUES (@section); SELECT SCOPE_IDENTITY(); ";

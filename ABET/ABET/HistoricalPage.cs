@@ -236,7 +236,9 @@ namespace ABET
 
                                 //NEED TO FIGURE OUT ID
                                 section.Add(new Section(course, semester, 0, 0, 0));   // I do not have sectionNum, student count or ID so they are 0 for now
+                                
 
+                                //List<SurveyClass> lsc = new List<SurveyClass>();
                                 /* 
                                  * Survey class info.
                                  * Has Section object, found above and id
@@ -248,8 +250,9 @@ namespace ABET
                                 {
                                     //NEED TO FIGURE OUT ID
                                     surveyClasses.Add(new SurveyClass(section[s], 0));
+                                    //lsc.Add(new SurveyClass(section[s], 0));
                                 }
-
+                                //session.Classes.Add(new Section(course, semester, 0, 0, 0, lsc));
                                 /*
                                  * Survey info. Has survey class obj, abet goal obj, response
                                  * Goals are stored in surveyGoals
@@ -282,6 +285,7 @@ namespace ABET
                                         {
                                             response = worksheet.GetValueRowCol(j, i).ToString();
                                             surveyResponses.Add(new Survey(surveyClasses[i - 2], surveyGoals[i - 2], Int32.Parse(response)));
+                                            //surveyClasses[i - 2].Surveys.Add(new Survey(surveyClasses[i - 2], surveyGoals[i - 2], Int32.Parse(response)));
                                         }
                                         catch (FormatException)
                                         {
@@ -362,7 +366,7 @@ namespace ABET
 
                             //NEED TO FIGURE OUT ID
                             section.Add(new Section(course, semester, sectionNum, studentNum, 0));
-
+                            session.InsertSection(course, semester, sectionNum, studentNum);
                             // Gather responses for each goal
                             numColumns = surveyGoals.Count;
                             numRows = 0;
