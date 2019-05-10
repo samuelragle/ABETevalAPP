@@ -7,12 +7,14 @@ namespace ABET.Data
     public class SurveyClass
     {
         private Section section;
+        internal List<Survey> Surveys;
         internal long id;
 
         public SurveyClass(Section section, long id)
         {
             this.section = section;
             this.id = id;
+            Surveys = new List<Survey>();
         }
         public override string ToString()
         {

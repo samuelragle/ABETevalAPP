@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ABET.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,11 @@ namespace ABET
     public class CourseAdditionPage : ContentPage
     {
         Button submitButton = new Button();
-        Entry departmentEntry = new Entry { Placeholder = "Department Name" };
-        Entry courseNumEntry = new Entry { Placeholder = "Course Number" };
-        Entry courseTitleEntry = new Entry { Placeholder = "Course Title" };
+        Button cancelButton = new Button();
+        Entry departmentEntry = new Entry { Placeholder = "Department Name (Ex: CS)" };
+        Entry courseNumEntry = new Entry { Placeholder = "Course Number (Ex: 4013)" };
+        Entry courseTitleEntry = new Entry { Placeholder = "Course Title (Ex: Artificial Intelligence)" };
+        Session session;
         
 
 
@@ -22,12 +25,14 @@ namespace ABET
         **/
         public CourseAdditionPage()
         {
+            session = App.GetSession();
             NavigationPage.SetHasNavigationBar(this, false);
 
             submitButton.WidthRequest = 300;
             departmentEntry.WidthRequest = 300;
             courseNumEntry.WidthRequest = 300;
             courseTitleEntry.WidthRequest = 300;
+            
 
             submitButton.Text = "Submit";
 
@@ -58,8 +63,25 @@ namespace ABET
              pull information and populate
              Make sure the entries map the data tyupe they need to be stored to
             **/
+            try
+            {
+                if (session.InsertCourse(departmentEntry.Text.ToUpper(), Convert.ToInt32(courseNumEntry.Text), courseTitleEntry.Text))
+                {
+                    await Navigation.PopAsync();
+                    HistoricalPage.coursePicker.ItemsSource = null;
 
-            await Navigation.PopAsync();
+                    HistoricalPage.coursePicker.ItemsSource = session.Courses;
+                    HistoricalPage.coursePicker.SelectedIndex = 0;
+                }
+                else
+                {
+                    // Tell user to try again
+                }
+            }
+            catch (Exception ex)
+            {
+                // Likely couldn't convert string 
+            }
 
             //update session object after updating database
         }

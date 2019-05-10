@@ -18,5 +18,9 @@ namespace ABET.Data
             CourseTitle = courseTitle;
             ID = id;
         }
+        public override string ToString()
+        {
+            return Department + " " + CourseNum + ": " + CourseTitle;
+        }
     }
 }

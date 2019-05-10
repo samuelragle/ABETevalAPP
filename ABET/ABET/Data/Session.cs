@@ -10,55 +10,57 @@ namespace ABET.Data
 {
     public class Session
     {
-        public List<Class> Classes;
-        private List<Class> SelectedClasses;
-        public List<SurveyClass> Outcomes;
-        public List<Survey> sClassSurveys;
+        public List<Section> Classes;
+        private List<Section> SelectedClasses;
         public List<Semester> Semesters;
+        public List<Course> Courses;
         private static SqlConnection conn;
 
         public Session(string connString, string semester)
         {
-            SelectedClasses = new List<Class>();
-            Outcomes = new List<SurveyClass>();
-            sClassSurveys = new List<Survey>();
+            SelectedClasses = new List<Section>();
             Semesters = new List<Semester>();
-            Classes = new List<Class>();
+            Classes = new List<Section>();
+            Courses = new List<Course>();
             conn = new SqlConnection(connString);
             conn.Open();
 
         }
-        public void UpdateClasses(string semester)
+
+        internal bool InsertCourse(string department, int courseNum, string courseTitle)
         {
-            sClassSurveys.Clear();
-            SelectedClasses.Clear();
-        }
-        public void UpdateSurveys()
-        {
-            sClassSurveys.Clear();
-            foreach (Class c in SelectedClasses)
+            string query = "INSERT INTO course VALUES (@department,@courseNum,@courseTitle)";
+            using (SqlCommand command = new SqlCommand(query, conn))
             {
-                sClassSurveys.AddRange(c.Surveys);
+
+                command.Parameters.AddWithValue("@department", department);
+                command.Parameters.AddWithValue("@courseNum", courseNum);
+                command.Parameters.AddWithValue("@courseTitle", courseTitle);
+
+                int result = command.ExecuteNonQuery();
+                if (result < 0)
+                    return false;
             }
+
+            PullCourses();
+            return true;
         }
-        public void AddSelection(Class selectedClass)
+        internal bool InsertSemester(string semester, int year)
         {
-            SelectedClasses.Add(selectedClass);
-            UpdateSurveys();
-        }
-        public void RemoveSelection(Class removedClass)
-        {
-            SelectedClasses.Remove(removedClass);
-            UpdateSurveys();
-        }
-        public int SurveyAverage()
-        {
-            int sum = 0;
-            foreach (Survey s in sClassSurveys)
+            string query = "INSERT INTO semesters VALUES (@semester,@year)";
+            using (SqlCommand command = new SqlCommand(query, conn))
             {
-                sum += s.response;
+               
+                command.Parameters.AddWithValue("@semester", semester);
+                command.Parameters.AddWithValue("@year", year);
+
+                int result = command.ExecuteNonQuery();
+                if (result < 0)
+                    return false;
             }
-            return sum / sClassSurveys.Count;
+
+            PullSemesters();
+            return true;
         }
         internal void PullSections(Semester semester)
         {
@@ -90,8 +92,8 @@ namespace ABET.Data
                 Course c = PullCourse(s.Course.ID);
                 s.Course = c;
                 s.SurveyClasses = PullSurveyClasses(s);
-                List<Survey> surveys = PullSurveys(s);
-                Classes.Add(new Class(s, surveys));
+                //List<Survey> surveys = PullSurveys(s);
+                Classes.Add(s);
 
             }
         }
@@ -114,35 +116,31 @@ namespace ABET.Data
                     }
                 }
             }
-            return results;
-        }
-
-        internal List<Survey> PullSurveys(Section s)
-        {
-            List<short> ABETIDs = new List<short>();
-            List<Survey> results = new List<Survey>();
-            StringBuilder sb = new StringBuilder();
-            sb.Append("SELECT id, goal, response FROM surveys sur WHERE sur.id IN ");
-            sb.Append("(SELECT id FROM surveys_class sc WHERE sc.section IN ");
-            sb.Append($"(SELECT id FROM section s WHERE s.id = {s.ID})) ORDER BY sur.id");
-            string sql = sb.ToString();
-
-            using (SqlCommand command = new SqlCommand(sql, conn))
+            foreach (SurveyClass sc in results)
             {
-                using (SqlDataReader reader = command.ExecuteReader())
+                List<Survey> surveys = new List<Survey>();
+                List<short> ABETIDs = new List<short>();
+                sb = new StringBuilder();
+                sb.Append("SELECT * FROM surveys ");
+                sb.Append($"WHERE id = {sc.id} ");
+                sb.Append($"ORDER BY id");
+                sql = sb.ToString();
+                using (SqlCommand command = new SqlCommand(sql, conn))
                 {
-                    while (reader.Read())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        //System.Diagnostics.Debug.WriteLine(reader.GetValue(0) + " " + reader.GetValue(1) + " " + reader.GetValue(2));
-                        SurveyClass sClass = s.SurveyClasses.Find(delegate (SurveyClass sc){ return sc.id == (long)reader.GetValue(0); });
-                        results.Add(new Survey(sClass, null, (byte)reader.GetValue(2)));
-                        ABETIDs.Add((short)reader.GetValue(1));
+                        while (reader.Read())
+                        {
+                            surveys.Add(new Survey(sc, null, (byte)reader.GetValue(2)));
+                            ABETIDs.Add((short)reader.GetValue(1));
+                        }
                     }
                 }
-            }
-            for(int i = 0; i < ABETIDs.Count; ++i)
-            {
-                results[i].goal = PullGoal(ABETIDs[i]);
+                for (int i = 0; i < ABETIDs.Count; ++i)
+                {
+                    surveys[i].goal = PullGoal(ABETIDs[i]);
+                }
+                sc.Surveys.AddRange(surveys);
             }
             return results;
         }
@@ -193,8 +191,29 @@ namespace ABET.Data
             }
             return null;
         }
+        internal void PullCourses()
+        {
+            Courses.Clear();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SELECT * ");
+            sb.Append("FROM course ");
+            string sql = sb.ToString();
+
+            using (SqlCommand command = new SqlCommand(sql, conn))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Course c = new Course((string)reader.GetString(0), (int)reader.GetValue(1), (string)reader.GetValue(2), (int)reader.GetValue(3));
+                        Courses.Add(c);
+                    }
+                }
+            }
+        }
         internal void PullSemesters()
         {
+            Semesters.Clear();
             // TODO: pull all classes by semster
             /* 
              * To pull a Class, pull the associated Section and list of Surveys

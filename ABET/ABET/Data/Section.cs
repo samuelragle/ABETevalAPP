@@ -20,5 +20,9 @@ namespace ABET.Data
             StudentCount = studentCount;
             ID = id;
         }
+        public override string ToString()
+        {
+            return Course.CourseTitle + " " + Semester.semester + " " + Semester.year;
+        }
     }
 }

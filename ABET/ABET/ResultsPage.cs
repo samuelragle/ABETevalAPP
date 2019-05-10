@@ -133,14 +133,17 @@ namespace ABET
             surveyResults.ColumnDefinitions.Clear();
             surveyResults.Children.Clear();
            // Populate raw data here
-           Class selectedClass = (Class)((ListView)sender).SelectedItem;
-            foreach (Survey s in selectedClass.Surveys)
+           Section selectedClass = (Section)((ListView)sender).SelectedItem;
+            foreach (SurveyClass sc in selectedClass.SurveyClasses)
             {
-                if (!outcomesTable.Contains(s.goal))
+                foreach (Survey s in sc.Surveys)
                 {
-                    outcomesTable.Add(s.goal, new List<Survey>());
+                    if (!outcomesTable.Contains(s.goal))
+                    {
+                        outcomesTable.Add(s.goal, new List<Survey>());
+                    }
+                    ((List<Survey>)outcomesTable[s.goal]).Add(s);
                 }
-                ((List<Survey>)outcomesTable[s.goal]).Add(s);
             }
             int index = 0;
             foreach (ABETGoal a in outcomesTable.Keys)
@@ -149,11 +152,16 @@ namespace ABET
                 ABETquestions.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Star });
                 surveyResults.ColumnDefinitions.Add(new ColumnDefinition() { Width = ABETquestions.ColumnDefinitions[index].Width });
                 int vindex = 0;
+                int sum = 0;
                 foreach(Survey s in (List<Survey>)outcomesTable[a])
                 {
                     surveyResults.Children.Add(new Label() { Text = s.response.ToString() }, index, vindex);
+                    sum += s.response;
                     vindex++;
                 }
+                double average = (double)sum / vindex;
+                surveyResults.Children.Add(new Label() { Text = "" }, index, vindex);
+                surveyResults.Children.Add(new Label() { Text = $"Average: {average}" }, index, vindex + 1);
                 index++;
             }
         }

@@ -20,8 +20,8 @@ namespace ABET
         Grid studentGrid = new Grid();
         Grid sectionGrid = new Grid();
 
-        Picker semesterPicker = new Picker();
-        Picker coursePicker = new Picker();
+        public static Picker semesterPicker;
+        public static Picker coursePicker = new Picker();
         Entry numEntry = new Entry { Placeholder = "Number of students" };
         Entry sectionNumEntry = new Entry { Placeholder = "Section Number" };
         Button semAddButton = new Button();
@@ -33,6 +33,7 @@ namespace ABET
         public HistoricalPage()
         {
 
+            semesterPicker = new Picker();
             NavigationPage.SetHasNavigationBar(this, false);
 
             Label label = new Label
@@ -68,11 +69,9 @@ namespace ABET
              * 
              * */
             //coursePicker.ItemsSource = session.Courses;
-
-            var list2 = new List<Course>();
-            list2.Add(new Course("CS", 4273, "Parallel Programming", 0));
-
-            coursePicker.ItemsSource = list2;
+            
+            session.PullCourses();
+            coursePicker.ItemsSource = session.Courses;
             coursePicker.SelectedIndex = 0;
 
 
@@ -159,7 +158,6 @@ namespace ABET
 
                 //THESE NEEED TO GO INTO DB
                 Section section;
-                Class currentClass;
                 SurveyClass surveyClass;
                 List<Survey> surveyResponses;
                 List<ABETGoal> surveyGoals;
@@ -293,14 +291,9 @@ namespace ABET
                                  * No section listed on excel files.
                                  * The list of surveys comes from the Survey objects parsed below
                                  **/
-
-                                currentClass = new Class(section, surveyResponses);
-
+                                 
 
                                 Debug.Print(section.ToString());
-                                Debug.Print("\n");
-                                Debug.Print("\n");
-                                Debug.Print(currentClass.ToString());
                                 Debug.Print("\n");
                                 Debug.Print("\n");
                                 Debug.Print(surveyClass.ToString());
@@ -396,13 +389,8 @@ namespace ABET
                                     // Add survey obj to survey responses list
                                 }
                             }
-
-                            currentClass = new Class(section, surveyResponses);
-
+                            
                             Debug.Print(section.ToString());
-                            Debug.Print("\n");
-                            Debug.Print("\n");
-                            Debug.Print(currentClass.ToString());
                             Debug.Print("\n");
                             Debug.Print("\n");
                             Debug.Print(surveyClass.ToString());
@@ -423,6 +411,7 @@ namespace ABET
 
 
                         }
+
 
                         // Print label
                         label.Text = "Input sucessful.";

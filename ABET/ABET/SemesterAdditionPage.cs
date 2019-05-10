@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ABET.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ABET
 
         Button submitButton = new Button();
         Entry yearEntry = new Entry { Placeholder = "Year" };
-
+        Session session;
         public static Picker seasonPicker = new Picker();
 
         /**
@@ -21,20 +22,19 @@ namespace ABET
         **/
         public SemesterAdditionPage()
         {
-
+            session = App.GetSession();
             NavigationPage.SetHasNavigationBar(this, false);
 
             seasonPicker = new Picker();
-            seasonPicker.Items.Add("Spring");
-            seasonPicker.Items.Add("Summer");
-            seasonPicker.Items.Add("Fall");
-            seasonPicker.Items.Add("Winter");
+            seasonPicker.Items.Add("T Spring");
+            seasonPicker.Items.Add("T Summer");
+            seasonPicker.Items.Add("T Fall");
+            seasonPicker.Items.Add("T Winter");
             submitButton.Text = "Submit";
 
             submitButton.WidthRequest = 300;
             yearEntry.WidthRequest = 300;
             seasonPicker.WidthRequest = 300;
-            
             
             seasonPicker.SelectedIndex = 0;
             
@@ -55,7 +55,10 @@ namespace ABET
             };
 
         }
-
+        public async void onCancelClicked(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
         public async void onSubmitClicked(object sender, EventArgs e)
         {
             /**
@@ -65,8 +68,28 @@ namespace ABET
              pull information and populate
              Make sure year Entry box is 
             **/
+            try
+            {
+                if (session.InsertSemester(seasonPicker.SelectedItem.ToString(), Convert.ToInt32(yearEntry.Text)))
+                {
+                    await Navigation.PopAsync();
+                    HistoricalPage.semesterPicker.ItemsSource = null;
+                    ResultsPage.semesterPicker.ItemsSource = null;
 
-            await Navigation.PopAsync();
+                    HistoricalPage.semesterPicker.ItemsSource = session.Semesters;
+                    HistoricalPage.semesterPicker.SelectedIndex = 0;
+                    ResultsPage.semesterPicker.ItemsSource = session.Semesters;
+                    ResultsPage.semesterPicker.SelectedIndex = 0;
+                }
+                else
+                {
+                    // Tell user to try again
+                }
+            }
+            catch(Exception ex)
+            {
+                // Likely couldn't convert string 
+            }
 
             //update session object after updating database
         }
